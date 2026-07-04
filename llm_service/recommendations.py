@@ -23,14 +23,6 @@ Respond strictly in this format:
 
 
 def build_stats(transactions: list[dict]) -> dict:
-    """
-    Сворачивает список транзакций в агрегированную статистику по категориям.
-    LLM получает статистику, а не сырые транзакции — так промпт короче и точнее.
-
-    Ожидает транзакции с полями: amount (float), category (str), currency (str)
-    TODO: добавить сравнение с предыдущим периодом когда партнёр
-          реализует хранение транзакций в БД
-    """
     stats = {}
 
     for tx in transactions:
@@ -42,16 +34,10 @@ def build_stats(transactions: list[dict]) -> dict:
 
         stats[category]["total"] += amount
         stats[category]["count"] += 1
-
-    # TODO: добавить топ-3 самых дорогих транзакций по каждой категории
-    # TODO: добавить процент от общей суммы расходов для каждой категории
     return stats
 
 
 def format_stats_for_prompt(stats: dict) -> str:
-    """
-    Превращает словарь статистики в читаемый текст для промпта.
-    """
     lines = []
     total = sum(v["total"] for v in stats.values())
 
@@ -67,14 +53,6 @@ def format_stats_for_prompt(stats: dict) -> str:
 
 
 def get_recommendations(transactions: list[dict]) -> list[dict]:
-    """
-    Основная функция модуля.
-    Принимает список категоризированных транзакций,
-    возвращает список рекомендаций от LLM.
-
-    TODO: добавить фильтрацию по периоду (неделя / месяц / квартал)
-          до передачи в эту функцию — на уровне FastAPI роутера
-    """
     if not transactions:
         return []
 

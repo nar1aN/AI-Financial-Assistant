@@ -28,19 +28,7 @@ Respond strictly in this format:
 """
 
 def categorize(transaction: dict) -> dict:
-    """
-        Takes a transaction dict, returns category and model confidence.
 
-        Input format:
-            {
-                "description": str,
-                "amount": Decimal | float,
-                "currency": str,  # e.g. "USD" or "RUB"
-            }
-
-        Returns:
-            {"category": str, "confidence": float}
-        """
     prompt = prompt_template.format(
         categories=", ".join(categories),
         description=transaction.get("description", ""),
